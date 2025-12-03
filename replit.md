@@ -56,21 +56,23 @@ The portal features a modern, professional UI with consistent styling across all
 - **Werkzeug**: WSGI utility library, used for security features like password hashing.
 - **Gunicorn**: WSGI HTTP server for production deployment.
 
-## Replit Setup (December 2, 2025)
+## Replit Setup (December 3, 2025 - GitHub Import)
 - **Environment**: Python 3.11 installed via Replit modules
-- **Database**: Using Replit's built-in PostgreSQL database (DATABASE_URL environment variable automatically configured)
+- **Database**: Using SQLite (exam_portal.db) as fallback. To use PostgreSQL, create a database in Replit UI (Database tool > Create database) and DATABASE_URL will be automatically set
 - **Dependencies**: All Python packages installed via packager tool from requirements.txt (Flask 3.0.0, Flask-SQLAlchemy 3.1.1, Flask-Mail, pandas, openpyxl, cryptography, etc.)
 - **Workflow**: Configured to run `python main.py` on port 5000 with webview output
 - **Deployment**: Configured for autoscale deployment using Gunicorn with command: `gunicorn --bind=0.0.0.0:5000 --reuse-port main:app`
 - **Environment Variables**: 
   - `SESSION_SECRET`: Automatically set by Replit (secret)
-  - `ENCRYPTION_KEY`: Generated and set for secure data encryption (shared)
-  - `DATABASE_URL`: Automatically set by Replit PostgreSQL
-  - Email configuration: `MAIL_SERVER`, `MAIL_PORT`, `MAIL_USE_TLS`, `MAIL_USERNAME`, `MAIL_PASSWORD` (set but empty, configure for email functionality)
+  - `ENCRYPTION_KEY`: Generated and set for secure data encryption (shared): `WmnSwh3Jzil0uYaG5rohfLof7QmptY8nX6jTK-MgiIw=`
+  - `DATABASE_URL`: Optional - create PostgreSQL database via Replit UI to automatically set this
+  - Email configuration: `MAIL_SERVER`, `MAIL_PORT`, `MAIL_USE_TLS` (set to defaults, configure `MAIL_USERNAME` and `MAIL_PASSWORD` for email functionality)
 - **Database Initialization**: Database seeded with 10 sample questions and default block password 'exam2024'
 - **Admin Credentials**: Username: `admin@vcodez`, Password: `admin@123`
 - **Default Block Password**: `exam2024` (configurable in admin dashboard)
 - **Application Status**: Running successfully on port 5000, admin login accessible, database connected
+- **File Structure**: Project files moved from `exam/` subdirectory to root for proper Replit setup
+- **Git Ignore**: Added comprehensive .gitignore for Python projects excluding database files, cache, and IDE files
 
 ## Email Configuration
 To enable email sending for bulk user imports:
