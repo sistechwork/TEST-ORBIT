@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera & Audio Verification - Test Orbit Exam Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 25%, #e2e8f0 50%, #cbd5e1 75%, #f1f5f9 100%);
+            background-size: 400% 400%;
+            animation: gradientMove 20s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .verification-container {
+            background: white;
+            backdrop-filter: blur(25px);
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .status-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            color: #1e293b;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(251, 191, 36, 0.3);
+            border: 1px solid rgba(251, 191, 36, 0.6);
+            color: #fbbf24;
+        }
+
+        .status-checking {
+            background: rgba(59, 130, 246, 0.3);
+            border: 1px solid rgba(59, 130, 246, 0.6);
+            color: #3b82f6;
+        }
+
+        .status-success {
+            background: rgba(34, 197, 94, 0.3);
+            border: 1px solid rgba(34, 197, 94, 0.6);
+            color: #22c55e;
+        }
+
+        .status-error {
+            background: rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.6);
+            color: #ef4444;
+        }
+
+        .video-preview {
+            position: relative;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            aspect-ratio: 16/9;
+        }
+
+        #videoPreview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            font-size: 16px;
+        }
+
+        .audio-visualizer {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .audio-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 4px;
+            height: 60px;
+        }
+
+        .audio-bar {
+            width: 8px;
+            background: linear-gradient(to top, #22c55e, #3b82f6);
+            border-radius: 4px;
+            transition: height 0.1s ease;
+            height: 10px;
+        }
+
+        .instructions {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .instructions h3 {
+            margin-bottom: 12px;
+            color: #60a5fa;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(22, 163, 74, 0.9));
+            color: white;
+        }
+
+        .btn-start:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-start:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-retry {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.9), rgba(245, 158, 11, 0.9));
+            color: white;
+        }
+
+        .btn-retry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+        }
+
+        .warning-box {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #fca5a5;
+            display: none;
+        }
+
+        .warning-box.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="notification-container"></div>
+    <div class="verification-container">
+        <h1>System Verification</h1>
+        <p class="subtitle">Please allow camera and microphone access to proceed with the exam</p>
+
+        <div class="instructions">
+            <h3>Requirements:</h3>
+            <ul>
+                <li>Your camera must be working and show your face clearly</li>
+                <li>Your microphone must be working</li>
+                <li>Ensure you are in a quiet environment with minimal background noise</li>
+                <li>Only one person should be visible in the camera frame</li>
+                <li>Good lighting is recommended for better face detection</li>
+            </ul>
+        </div>
+
+        <div class="warning-box" id="warningBox"></div>
+
+        <div class="status-box">
+            <div class="status-item">
+                <span class="status-label">Camera Access</span>
+                <span class="status-indicator status-pending" id="cameraStatus">Pending</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Face Detection</span>
+                <span class="status-indicator status-pending" id="faceStatus">Pending</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Verification Photo</span>
+                <span class="status-indicator status-pending" id="photoStatus">Pending</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Audio Access</span>
+                <span class="status-indicator status-pending" id="audioStatus">Pending</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Background Noise Check</span>
+                <span class="status-indicator status-pending" id="noiseStatus">Pending</span>
+            </div>
+        </div>
+
+        <div class="video-preview">
+            <video id="videoPreview" autoplay playsinline muted></video>
+            <div class="preview-overlay" id="videoOverlay">
+                <p>Click "Start Verification" to begin</p>
+            </div>
+        </div>
+
+        <div class="audio-visualizer">
+            <div class="audio-bars" id="audioBars">
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="btn btn-retry" id="retryBtn" onclick="startVerification()" style="display:none">Retry Verification</button>
+            <button class="btn btn-start" id="startVerificationBtn" onclick="startVerification()">Start Verification</button>
+            <button class="btn btn-start" id="capturePhotoBtn" onclick="capturePhoto()" style="display:none" disabled>Take Photo</button>
+            <button class="btn btn-start" id="proceedBtn" onclick="proceedToExam()" style="display:none" disabled>Proceed to Exam</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
+    <script>
+        let videoStream = null;
+        let audioStream = null;
+        let audioContext = null;
+        let analyser = null;
+        let faceDetection = null;
+        let verificationComplete = false;
+        let cameraWorking = false;
+        let audioWorking = false;
+        let faceDetected = false;
+        let photoCaptured = false;
+
+        const statusElements = {
+            camera: document.getElementById('cameraStatus'),
+            face: document.getElementById('faceStatus'),
+            photo: document.getElementById('photoStatus'),
+            audio: document.getElementById('audioStatus'),
+            noise: document.getElementById('noiseStatus')
+        };
+
+        function updateStatus(element, status, text) {
+            element.className = 'status-indicator status-' + status;
+            element.textContent = text;
+        }
+
+        function showWarning(message) {
+            const warningBox = document.getElementById('warningBox');
+            warningBox.textContent = message;
+            warningBox.classList.add('show');
+        }
+
+        function hideWarning() {
+            const warningBox = document.getElementById('warningBox');
+            warningBox.classList.remove('show');
+        }
+
+        async function startVerification() {
+            hideWarning();
+            document.getElementById('startVerificationBtn').style.display = 'none';
+            document.getElementById('retryBtn').style.display = 'none';
+            document.getElementById('capturePhotoBtn').style.display = 'none';
+            document.getElementById('proceedBtn').disabled = true;
+            verificationComplete = false;
+            cameraWorking = false;
+            audioWorking = false;
+            faceDetected = false;
+            photoCaptured = false;
+
+            try {
+                await initializeCamera();
+                await initializeAudio();
+                await checkFaceDetection();
+                const noiseOk = await checkBackgroundNoise();
+                
+                if (!noiseOk) {
+                    audioWorking = false;
+                }
+                
+                const basicChecksComplete = cameraWorking && audioWorking && faceDetected;
+                
+                if (basicChecksComplete) {
+                    document.getElementById('capturePhotoBtn').style.display = 'inline-block';
+                    document.getElementById('capturePhotoBtn').disabled = false;
+                    showWarning('Please capture your verification photo to continue.');
+                } else {
+                    document.getElementById('retryBtn').style.display = 'inline-block';
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+                showWarning('Verification failed: ' + error.message);
+                document.getElementById('retryBtn').style.display = 'inline-block';
+            }
+        }
+
+        async function initializeCamera() {
+            updateStatus(statusElements.camera, 'checking', 'Requesting...');
+            
+            try {
+                videoStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'user' },
+                    audio: false
+                });
+                
+                const video = document.getElementById('videoPreview');
+                video.srcObject = videoStream;
+                document.getElementById('videoOverlay').style.display = 'none';
+                
+                cameraWorking = true;
+                updateStatus(statusElements.camera, 'success', 'Connected');
+                return true;
+            } catch (error) {
+                cameraWorking = false;
+                updateStatus(statusElements.camera, 'error', 'Failed');
+                throw new Error('Camera access denied. Please allow camera permission.');
+            }
+        }
+
+        async function initializeAudio() {
+            updateStatus(statusElements.audio, 'checking', 'Requesting...');
+            
+            try {
+                audioStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: false,
+                    audio: true
+                });
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                const source = audioContext.createMediaStreamSource(audioStream);
+                source.connect(analyser);
+                
+                analyser.fftSize = 256;
+                startAudioVisualization();
+                
+                audioWorking = true;
+                updateStatus(statusElements.audio, 'success', 'Connected');
+                return true;
+            } catch (error) {
+                audioWorking = false;
+                updateStatus(statusElements.audio, 'error', 'Failed');
+                throw new Error('Microphone access denied. Please allow microphone permission.');
+            }
+        }
+
+        function startAudioVisualization() {
+            const bars = document.querySelectorAll('.audio-bar');
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            
+            function animate() {
+                if (!audioStream) return;
+                
+                analyser.getByteFrequencyData(dataArray);
+                
+                bars.forEach((bar, index) => {
+                    const dataIndex = Math.floor(index * bufferLength / bars.length);
+                    const value = dataArray[dataIndex];
+                    const height = (value / 255) * 60;
+                    bar.style.height = height + 'px';
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+
+        async function checkFaceDetection() {
+            updateStatus(statusElements.face, 'checking', 'Detecting...');
+            
+            return new Promise((resolve, reject) => {
+                const faceDetection = new FaceDetection({locateFile: (file) => {
+                    return `https://cdn.jsdelivr.net/npm/@mediapipe/face_detection/${file}`;
+                }});
+                
+                faceDetection.setOptions({
+                    model: 'short',
+                    minDetectionConfidence: 0.5
+                });
+                
+                let checkCount = 0;
+                const maxChecks = 10;
+                
+                faceDetection.onResults((results) => {
+                    checkCount++;
+                    
+                    if (results.detections && results.detections.length > 0) {
+                        if (results.detections.length === 1) {
+                            faceDetected = true;
+                            updateStatus(statusElements.face, 'success', '1 Face Detected');
+                            faceDetection.close();
+                            resolve(true);
+                        } else if (results.detections.length > 1) {
+                            faceDetected = false;
+                            updateStatus(statusElements.face, 'error', 'Multiple Faces');
+                            faceDetection.close();
+                            reject(new Error('Multiple faces detected. Please ensure only you are visible.'));
+                        }
+                    } else if (checkCount >= maxChecks) {
+                        if (!faceDetected) {
+                            updateStatus(statusElements.face, 'error', 'No Face');
+                            faceDetection.close();
+                            reject(new Error('No face detected. Please position yourself in front of the camera.'));
+                        }
+                    }
+                });
+                
+                const video = document.getElementById('videoPreview');
+                const camera = new Camera(video, {
+                    onFrame: async () => {
+                        if (checkCount < maxChecks) {
+                            await faceDetection.send({image: video});
+                        }
+                    },
+                    width: 640,
+                    height: 480
+                });
+                camera.start();
+            });
+        }
+
+        async function checkBackgroundNoise() {
+            updateStatus(statusElements.noise, 'checking', 'Analyzing...');
+            
+            return new Promise((resolve) => {
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                let sampleCount = 0;
+                const maxSamples = 30;
+                let totalVolume = 0;
+                
+                const interval = setInterval(() => {
+                    analyser.getByteFrequencyData(dataArray);
+                    const average = dataArray.reduce((a, b) => a + b) / bufferLength;
+                    totalVolume += average;
+                    sampleCount++;
+                    
+                    if (sampleCount >= maxSamples) {
+                        clearInterval(interval);
+                        const avgVolume = totalVolume / maxSamples;
+                        
+                        if (avgVolume < 30) {
+                            updateStatus(statusElements.noise, 'success', 'Quiet');
+                            resolve(true);
+                        } else if (avgVolume < 60) {
+                            updateStatus(statusElements.noise, 'success', 'Acceptable');
+                            resolve(true);
+                        } else {
+                            updateStatus(statusElements.noise, 'error', 'Too Loud');
+                            showWarning('Background noise level is too high. Please find a quieter environment.');
+                            audioWorking = false;
+                            resolve(false);
+                        }
+                    }
+                }, 100);
+            });
+        }
+
+        async function capturePhoto() {
+            updateStatus(statusElements.photo, 'checking', 'Capturing...');
+            
+            try {
+                const video = document.getElementById('videoPreview');
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                const photoData = canvas.toDataURL('image/jpeg', 0.8);
+                
+                const response = await fetch('/save_verification_photo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ photo: photoData })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    photoCaptured = true;
+                    updateStatus(statusElements.photo, 'success', 'Captured');
+                    document.getElementById('capturePhotoBtn').style.display = 'none';
+                    document.getElementById('proceedBtn').style.display = 'inline-block';
+                    document.getElementById('proceedBtn').disabled = false;
+                    hideWarning();
+                } else {
+                    updateStatus(statusElements.photo, 'error', 'Failed');
+                    showWarning('Failed to save photo: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Photo capture error:', error);
+                updateStatus(statusElements.photo, 'error', 'Failed');
+                showWarning('Failed to capture photo. Please try again.');
+            }
+        }
+
+        function proceedToExam() {
+            const verificationData = {
+                camera_working: cameraWorking,
+                audio_working: audioWorking,
+                face_detected: faceDetected
+            };
+            
+            fetch('/verify_proctoring_setup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(verificationData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/exam';
+                } else {
+                    showWarning(data.message || 'Verification incomplete. Please complete all checks.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showWarning('Failed to proceed. Please try again.');
+            });
+        }
+
+        window.addEventListener('beforeunload', () => {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+            }
+            if (audioStream) {
+                audioStream.getTracks().forEach(track => track.stop());
+            }
+            if (audioContext) {
+                audioContext.close();
+            }
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+</body>
+</html>

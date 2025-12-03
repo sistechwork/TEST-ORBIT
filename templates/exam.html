@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam - Test Orbit Exam Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 25%, #e2e8f0 50%, #cbd5e1 75%, #f1f5f9 100%);
+            background-size: 400% 400%;
+            animation: gradientMove 20s ease infinite;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientMove {
+            0% { 
+                background-position: 0% 50%; 
+            }
+            25% { 
+                background-position: 50% 100%; 
+            }
+            50% { 
+                background-position: 100% 50%; 
+            }
+            75% { 
+                background-position: 50% 0%; 
+            }
+            100% { 
+                background-position: 0% 50%; 
+            }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(30, 64, 175, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(37, 99, 235, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 70% 20%, rgba(96, 165, 250, 0.04) 0%, transparent 35%);
+            animation: floatBubbles 25s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatBubbles {
+            0%, 100% { 
+                transform: translate(0, 0) scale(1);
+                opacity: 0.8;
+            }
+            25% { 
+                transform: translate(30px, -30px) scale(1.1);
+                opacity: 1;
+            }
+            50% { 
+                transform: translate(-20px, 20px) scale(0.9);
+                opacity: 0.6;
+            }
+            75% { 
+                transform: translate(20px, 30px) scale(1.05);
+                opacity: 0.9;
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-section {
+            background: white;
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .logo-header {
+            margin-bottom: 20px;
+        }
+
+        .logo-header {
+            background: #f8fafc;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 15px;
+            display: inline-block;
+        }
+
+        .logo-header img {
+            height: 45px;
+            width: auto;
+            background: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            display: block;
+        }
+
+        h1 {
+            color: #1e293b;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .user-info {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .user-info strong {
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .user-info a {
+            color: #ef4444;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .user-info a:hover {
+            color: #dc2626;
+        }
+
+        .exam-timer {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.9) 0%, rgba(30, 64, 175, 0.9) 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        #timer-display {
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            margin-left: 5px;
+        }
+
+        .warning-banner {
+            background: #fef2f2;
+            backdrop-filter: blur(10px);
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 13px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.1);
+        }
+
+        .flash-messages {
+            margin: 20px 0;
+            display: none;
+        }
+
+        .flash {
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            border: 2px solid;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .flash.error {
+            background: rgba(254, 226, 226, 0.95);
+            color: #c33;
+            border-color: #dc2626;
+        }
+
+        .flash.success {
+            background: rgba(220, 252, 231, 0.95);
+            color: #2c3;
+            border-color: #16a34a;
+        }
+
+        .question-card {
+            background: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 28px;
+            margin-bottom: 20px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.15),
+                0 0 80px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.2),
+                0 0 100px rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .question-text {
+            color: #2d3748;
+            font-size: 17px;
+            margin-bottom: 22px;
+            line-height: 1.7;
+            font-weight: 500;
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 50%, #1e3a8a 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            margin-right: 15px;
+            font-size: 16px;
+            font-weight: 700;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .question-points {
+            float: right;
+            font-size: 15px;
+            color: white;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+            padding: 6px 16px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .options {
+            margin-left: 20px;
+        }
+
+        .option {
+            margin-bottom: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .option label {
+            color: #4a5568;
+            font-size: 15px;
+            cursor: pointer;
+            line-height: 1.7;
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .option label:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(30, 64, 175, 0.05) 100%);
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateX(4px);
+        }
+
+        .option input[type="radio"] {
+            margin-right: 14px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #2563eb;
+        }
+
+        .option input[type="radio"]:checked + label,
+        .option label:has(input[type="radio"]:checked) {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(30, 64, 175, 0.1) 100%);
+            border-color: #3b82f6;
+            font-weight: 600;
+            color: #1e40af;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #2d3748;
+            background: #f8fafc;
+            outline: none;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #2563eb;
+            background: white;
+            box-shadow: 
+                0 0 0 4px rgba(37, 99, 235, 0.1),
+                0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        input[type="text"]::placeholder,
+        textarea::placeholder {
+            color: #94a3b8;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 130px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            width: 100%;
+            max-width: 300px;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 50%, #1e3a8a 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            display: block;
+            margin: 30px auto;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #1e40af 100%);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        #block-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #block-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content h2 {
+            color: #fecaca;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            color: white;
+            font-size: 15px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        #unblock-password {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+
+            .header-section {
+                padding: 20px;
+            }
+        }
+
+        .proctor-warning {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10000;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: none;
+            max-width: 80%;
+            text-align: center;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translate(-50%, -100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%);
+                opacity: 1;
+            }
+        }
+
+        .proctor-warning.error {
+            background: rgba(220, 38, 38, 0.95);
+            border: 2px solid #991b1b;
+            color: white;
+        }
+
+        .proctor-warning.warning {
+            background: rgba(251, 191, 36, 0.95);
+            border: 2px solid #d97706;
+            color: #78350f;
+        }
+
+        .proctor-warning.info {
+            background: rgba(59, 130, 246, 0.95);
+            border: 2px solid #1e40af;
+            color: white;
+        }
+
+        #proctorVideo {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            height: 150px;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            background: #000;
+        }
+
+        @media (max-width: 768px) {
+            #proctorVideo {
+                width: 120px;
+                height: 90px;
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .proctor-warning {
+                font-size: 12px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_detection"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
+</head>
+<body>
+    <div id="notification-container"></div>
+    <div id="proctorWarning" class="proctor-warning"></div>
+    <video id="proctorVideo" autoplay playsinline muted></video>
+    
+    <div class="container">
+        <div class="header-section">
+            <div class="logo-header">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Test Orbit Logo" style="background: transparent; padding: 0;">
+            </div>
+            <h1><svg style="width: 24px; height: 24px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M7 7h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path></svg>Examination</h1>
+            <p class="user-info">
+                Welcome, <strong>{{ session.username }}</strong> | 
+                <a href="/logout">Logout</a>
+            </p>
+            
+            <div class="exam-timer" id="timer">
+                ⏱️ Time Remaining: <span id="timer-display">{{ duration }}:00</span>
+            </div>
+        </div>
+        
+        <div class="warning-banner">
+            <svg style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3.05h16.94a2 2 0 0 0 1.71-3.05L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>Anti-Cheating Measures Active: Copy/Paste, Tab Switching, Page Reload, Developer Tools, Camera & Audio Monitoring
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <form method="POST" action="/submit_exam" id="exam-form" autocomplete="off">
+            {% for question in questions %}
+            <div class="question-card">
+                <div class="question-text">
+                    <span class="question-number">Q{{ loop.index }}</span>
+                    {{ question.question_text }}
+                    <span class="question-points">{{ question.points }} pts</span>
+                </div>
+                
+                {% if question.question_type == 'MCQ' %}
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" id="q{{ question.id }}_a" name="question_{{ question.id }}" value="A" required>
+                        <span style="font-weight: 700; margin-right: 10px; color: #2563eb;">A)</span> {{ question.option_a }}
+                    </label>
+                    <label class="option">
+                        <input type="radio" id="q{{ question.id }}_b" name="question_{{ question.id }}" value="B">
+                        <span style="font-weight: 700; margin-right: 10px; color: #2563eb;">B)</span> {{ question.option_b }}
+                    </label>
+                    <label class="option">
+                        <input type="radio" id="q{{ question.id }}_c" name="question_{{ question.id }}" value="C">
+                        <span style="font-weight: 700; margin-right: 10px; color: #2563eb;">C)</span> {{ question.option_c }}
+                    </label>
+                    <label class="option">
+                        <input type="radio" id="q{{ question.id }}_d" name="question_{{ question.id }}" value="D">
+                        <span style="font-weight: 700; margin-right: 10px; color: #2563eb;">D)</span> {{ question.option_d }}
+                    </label>
+                </div>
+                {% elif question.question_type == 'SHORT_ANSWER' %}
+                <div style="margin-left: 20px; margin-top: 15px;">
+                    <input type="text" name="question_{{ question.id }}" placeholder="Enter your answer here" required style="max-width: 600px;">
+                </div>
+                {% elif question.question_type == 'PARAGRAPH' %}
+                <div style="margin-left: 20px; margin-top: 15px;">
+                    <textarea name="question_{{ question.id }}" rows="6" placeholder="Enter your answer here" required></textarea>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn"><svg style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>Submit Exam</button>
+        </form>
+    </div>
+    
+    <div id="block-modal">
+        <div class="modal-content">
+            <h2><svg style="width: 20px; height: 20px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3.05h16.94a2 2 0 0 0 1.71-3.05L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>Security Alert!</h2>
+            <p id="violation-message">You switched tabs or reloaded the page during the exam. Please enter the password to continue.</p>
+            <input type="password" id="unblock-password" placeholder="Enter password" autocomplete="new-password">
+            <button class="btn" onclick="checkPassword()">Continue Exam</button>
+        </div>
+    </div>
+    
+    <script>
+        let examStartTime = Date.now();
+        let tabSwitched = false;
+        let pageReloaded = false;
+        let examDuration = {{ duration }} * 60;
+        let timeRemaining = examDuration;
+        
+        if (!sessionStorage.getItem('examStarted')) {
+            sessionStorage.setItem('examStarted', 'true');
+            sessionStorage.setItem('examStartTime', Date.now().toString());
+        } else {
+            pageReloaded = true;
+            const startTime = parseInt(sessionStorage.getItem('examStartTime'));
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            timeRemaining = Math.max(0, examDuration - elapsed);
+            showBlockModal('page reload');
+        }
+        
+        const timerInterval = setInterval(updateTimer, 1000);
+        
+        function updateTimer() {
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                autoSubmitExam();
+                return;
+            }
+            
+            timeRemaining--;
+            
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timer-display').textContent = display;
+            
+            const timerElement = document.getElementById('timer');
+            if (timeRemaining <= 60) {
+                timerElement.style.background = 'linear-gradient(135deg, rgba(239, 68, 68, 0.9) 0%, rgba(220, 38, 38, 0.9) 100%)';
+            } else if (timeRemaining <= 300) {
+                timerElement.style.background = 'linear-gradient(135deg, rgba(251, 146, 60, 0.9) 0%, rgba(249, 115, 22, 0.9) 100%)';
+            }
+        }
+        
+        function autoSubmitExam() {
+            sessionStorage.removeItem('examStarted');
+            sessionStorage.removeItem('examStartTime');
+            alert('Time is up! Your exam will be submitted automatically.');
+            document.getElementById('exam-form').submit();
+        }
+        
+        document.addEventListener('copy', function(e) {
+            e.preventDefault();
+            showAlert('Copying is disabled during the exam!');
+        });
+        
+        document.addEventListener('cut', function(e) {
+            e.preventDefault();
+            showAlert('Cutting is disabled during the exam!');
+        });
+        
+        document.addEventListener('paste', function(e) {
+            e.preventDefault();
+            showAlert('Pasting is disabled during the exam!');
+        });
+        
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            showAlert('Right-click is disabled during the exam!');
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12') {
+                e.preventDefault();
+                showAlert('Developer tools are disabled during the exam!');
+                return false;
+            }
+            
+            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+                e.preventDefault();
+                showAlert('Developer tools are disabled during the exam!');
+                return false;
+            }
+            
+            if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+                e.preventDefault();
+                showAlert('Developer tools are disabled during the exam!');
+                return false;
+            }
+            
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                e.preventDefault();
+                showAlert('Developer tools are disabled during the exam!');
+                return false;
+            }
+            
+            if (e.ctrlKey && e.key === 'u') {
+                e.preventDefault();
+                showAlert('Viewing source is disabled during the exam!');
+                return false;
+            }
+        });
+        
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden && !tabSwitched) {
+                tabSwitched = true;
+                showBlockModal('tab switch');
+            }
+        });
+        
+        window.addEventListener('blur', function() {
+            if (!tabSwitched) {
+                tabSwitched = true;
+                showBlockModal('tab switch');
+            }
+        });
+        
+        window.addEventListener('beforeunload', function(e) {
+            e.preventDefault();
+            e.returnValue = 'Are you sure you want to leave? Your exam progress may be lost.';
+            return e.returnValue;
+        });
+        
+        function showAlert(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'flash error';
+            alertDiv.textContent = message;
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '20px';
+            alertDiv.style.right = '20px';
+            alertDiv.style.zIndex = '10000';
+            alertDiv.style.minWidth = '300px';
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+        
+        function showBlockModal(violationType) {
+            const modal = document.getElementById('block-modal');
+            const message = document.getElementById('violation-message');
+            
+            if (violationType === 'page reload') {
+                message.textContent = 'You reloaded the page during the exam. Please enter the password to continue.';
+            } else {
+                message.textContent = 'You switched tabs or windows during the exam. Please enter the password to continue.';
+            }
+            
+            modal.classList.add('active');
+            document.getElementById('exam-form').style.pointerEvents = 'none';
+            document.getElementById('exam-form').style.opacity = '0.5';
+            document.getElementById('exam-form').style.filter = 'blur(3px)';
+        }
+        
+        async function checkPassword() {
+            const enteredPassword = document.getElementById('unblock-password').value;
+            
+            if (!enteredPassword) {
+                showAlert('Please enter the password!');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/verify_block_password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ password: enteredPassword })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('block-modal').classList.remove('active');
+                    document.getElementById('exam-form').style.pointerEvents = 'auto';
+                    document.getElementById('exam-form').style.opacity = '1';
+                    document.getElementById('exam-form').style.filter = 'none';
+                    document.getElementById('unblock-password').value = '';
+                    tabSwitched = false;
+                    pageReloaded = false;
+                } else {
+                    showAlert(data.message || 'Incorrect password! Please try again.');
+                    document.getElementById('unblock-password').value = '';
+                }
+            } catch (error) {
+                showAlert('Error verifying password. Please try again.');
+                console.error('Password verification error:', error);
+            }
+        }
+        
+        document.getElementById('unblock-password').addEventListener('keypress', function(e) {
+            if (e.key == 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        document.getElementById('exam-form').addEventListener('submit', function() {
+            sessionStorage.removeItem('examStarted');
+            sessionStorage.removeItem('examStartTime');
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/proctor.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Completed - Exam Portal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}">
+</head>
+<body>
+    <div id="notification-container"></div>
+    <div class="container">
+        <div style="text-align: center; padding: 40px 20px;">
+            <svg style="width: 80px; height: 80px; margin: 0 auto 24px; animation: scaleIn 0.5s ease-out; display: block;" viewBox="0 0 24 24" fill="none" stroke="#51cf66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <h1 style="margin-bottom: 16px; font-size: 36px;">Exam Finished!</h1>
+            <p style="font-size: 20px; color: #4a5568; margin-bottom: 32px; line-height: 1.6;">
+                Thank you for completing the examination.
+            </p>
+            
+            <div style="background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); color: white; padding: 32px; border-radius: 12px; margin-bottom: 32px; box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);">
+                <p style="font-size: 18px; margin-bottom: 12px; opacity: 0.95;">
+                    Your responses have been successfully submitted and recorded.
+                </p>
+                <p style="font-size: 16px; opacity: 0.9;">
+                    The administrator will review your answers and evaluate your performance.
+                </p>
+            </div>
+            
+            <div style="padding: 24px; background: #f7fafc; border-radius: 10px; border: 2px solid #e2e8f0; margin-bottom: 32px;">
+                <p style="color: #4a5568; font-size: 16px; line-height: 1.8;">
+                    <svg style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>Your exam has been submitted<br>
+                    <svg style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>All your answers have been saved<br>
+                    <svg style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>Results will be available to the administrator
+                </p>
+            </div>
+        </div>
+        
+        <a href="{{ url_for('logout') }}"><button class="btn">Logout</button></a>
+    </div>
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+</body>
+</html>

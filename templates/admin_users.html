@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}">
+    <style>
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+            padding: 20px;
+            color: #1e293b;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: margin-left 0.3s ease;
+            border-right: 1px solid #cbd5e1;
+        }
+        .sidebar.collapsed {
+            margin-left: -250px;
+        }
+        .sidebar h2 {
+            color: #1e293b;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar-nav li {
+            margin-bottom: 10px;
+        }
+        .sidebar-nav a {
+            display: block;
+            padding: 12px 16px;
+            color: #475569;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+        .main-content.expanded {
+            margin-left: 0;
+        }
+        .toggle-sidebar {
+            position: fixed;
+            top: 20px;
+            left: 260px;
+            z-index: 1000;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: left 0.3s ease;
+        }
+        .toggle-sidebar.collapsed {
+            left: 10px;
+        }
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .users-table th {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+        }
+        .users-table th:hover {
+            background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+        }
+        .users-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .users-table tr:hover {
+            background: #f7fafc;
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background: white;
+            margin: 50px auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 700px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .close-modal {
+            color: #999;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-modal:hover {
+            color: #333;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .pagination a, .pagination span {
+            padding: 8px 12px;
+            border-radius: 5px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+        }
+        .pagination span {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div id="notification-container"></div>
+    <div class="admin-layout">
+        <nav class="sidebar" id="sidebar">
+            <h2><svg style="width: 20px; height: 20px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>Admin Panel</h2>
+            <ul class="sidebar-nav">
+                <li><a href="{{ url_for('admin_dashboard') }}"><svg style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>Dashboard</a></li>
+                <li><a href="{{ url_for('admin_users_list') }}" class="active"><svg style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>Users</a></li>
+                <li><a href="{{ url_for('smtp_settings') }}"><svg style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>Email Settings</a></li>
+                <li><a href="{{ url_for('admin_activities') }}"><svg style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>Activities</a></li>
+                <li><a href="{{ url_for('logout') }}"><svg style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4"></path><polyline points="17 17 22 12 17 7"></polyline><line x1="7" y1="12" x2="22" y2="12"></line></svg>Logout</a></li>
+            </ul>
+        </nav>
+        
+        <button class="toggle-sidebar" id="toggleSidebar" onclick="toggleSidebar()"><svg style="width: 20px; height: 20px; display: inline-block; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line></svg></button>
+        
+        <div class="main-content" id="mainContent">
+            <div class="container" style="max-width: 1400px;">
+                <h1><svg style="width: 24px; height: 24px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>User Management</h1>
+                <p style="margin-bottom: 20px; color: #666;">Total Users: {{ total_users }}</p>
+                
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable('username')">Username</th>
+                            <th onclick="sortTable('name')">Name</th>
+                            <th onclick="sortTable('email')">Email</th>
+                            <th onclick="sortTable('location')">Location</th>
+                            <th onclick="sortTable('college_name')">College</th>
+                            <th onclick="sortTable('created_at')">Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr onclick="viewUserDetails({{ user.id }})">
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.name or 'N/A' }}</td>
+                            <td>{{ user.email or 'N/A' }}</td>
+                            <td>{{ user.location or 'N/A' }}</td>
+                            <td>{{ user.college_name or 'N/A' }}</td>
+                            <td>{{ user.created_at.strftime('%Y-%m-%d') if user.created_at else 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <div class="pagination">
+                    {% if page > 1 %}
+                        <a href="?page={{ page - 1 }}&sort={{ sort_by }}&order={{ order }}">← Previous</a>
+                    {% endif %}
+                    <span>Page {{ page }} of {{ total_pages }}</span>
+                    {% if page < total_pages %}
+                        <a href="?page={{ page + 1 }}&sort={{ sort_by }}&order={{ order }}">Next →</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            const toggleBtn = document.getElementById('toggleSidebar');
+            
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+            toggleBtn.classList.toggle('collapsed');
+        }
+        
+        function sortTable(column) {
+            const currentOrder = '{{ order }}';
+            const newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+            window.location.href = `?sort=${column}&order=${newOrder}&page=1`;
+        }
+        
+        function viewUserDetails(userId) {
+            fetch(`/admin/user_details/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const user = data.user;
+                        const content = `
+                            <h2 style="color: #667eea; margin-bottom: 20px;">User Details</h2>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                                <div><strong>Username:</strong> ${user.username}</div>
+                                <div><strong>Name:</strong> ${user.name}</div>
+                                <div><strong>Email:</strong> ${user.email}</div>
+                                <div><strong>Contact:</strong> ${user.contact_number}</div>
+                                <div><strong>Location:</strong> ${user.location}</div>
+                                <div><strong>Institute:</strong> ${user.institute_name}</div>
+                                <div><strong>College:</strong> ${user.college_name}</div>
+                                <div><strong>Degree:</strong> ${user.degree}</div>
+                                <div><strong>Year of Passing:</strong> ${user.year_of_passing}</div>
+                                <div><strong>Created:</strong> ${user.created_at}</div>
+                            </div>
+                            ${user.resume_url ? `<div style="margin-top: 15px;"><strong>Resume:</strong> <a href="${user.resume_url}" target="_blank" style="color: #667eea;">View Resume</a></div>` : ''}
+                            
+                            <div id="passwordDisplay" style="display: none; margin-top: 20px; padding: 15px; background: #fef3c7; border: 2px solid #f59e0b; border-radius: 8px;">
+                                <h3 style="color: #92400e; margin-bottom: 10px;">Generated Password</h3>
+                                <div style="font-size: 18px; font-weight: bold; color: #92400e; font-family: monospace;" id="generatedPassword"></div>
+                                <div style="margin-top: 8px; font-size: 13px; color: #78350f;">Copy this password and share with the user, or use the "Send Email" button below.</div>
+                            </div>
+                            
+                            <div style="margin-top: 20px; padding: 15px; background: #f7fafc; border-radius: 8px;">
+                                <h3 style="color: #667eea; margin-bottom: 10px;">Exam Status</h3>
+                                <div><strong>Completed:</strong> ${user.exam_completed ? 'Yes' : 'No'}</div>
+                                ${user.exam_completed ? `
+                                    <div><strong>Score:</strong> ${user.score}%</div>
+                                    <div><strong>Correct Answers:</strong> ${user.correct_answers}/${user.total_questions}</div>
+                                ` : ''}
+                                <div><strong>Proctor Events:</strong> ${user.proctor_events_count}</div>
+                            </div>
+                            
+                            <div style="margin-top: 25px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                                <button onclick="generatePassword(${user.id})" style="padding: 10px 20px; background: linear-gradient(135deg, #16a34a 0%, #059669 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Generate Password</button>
+                                <button onclick="sendEmail(${user.id})" id="sendEmailBtn" style="padding: 10px 20px; background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; display: none;">Send Email</button>
+                                <form action="/admin/delete_user/${user.id}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                    <button type="submit" style="padding: 10px 20px; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Delete User</button>
+                                </form>
+                                <button onclick="closeModal()" style="padding: 10px 20px; background: #9ca3af; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">Close</button>
+                            </div>
+                        `;
+                        document.getElementById('modalContent').innerHTML = content;
+                        document.getElementById('userModal').style.display = 'block';
+                    }
+                });
+        }
+        
+        let currentPassword = '';
+        
+        function generatePassword(userId) {
+            fetch(`/admin/generate_password/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    currentPassword = data.password;
+                    document.getElementById('generatedPassword').textContent = data.password;
+                    document.getElementById('passwordDisplay').style.display = 'block';
+                    document.getElementById('sendEmailBtn').style.display = 'inline-block';
+                    showNotification(data.message, 'success');
+                } else {
+                    showNotification(data.message || 'Failed to generate password', 'error');
+                }
+            })
+            .catch(error => {
+                showNotification('Error generating password', 'error');
+            });
+        }
+        
+        function sendEmail(userId) {
+            if (!currentPassword) {
+                showNotification('Please generate a password first', 'error');
+                return;
+            }
+            
+            fetch(`/admin/send_credentials/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ password: currentPassword })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                } else {
+                    showNotification(data.message || 'Failed to send email', 'error');
+                }
+            })
+            .catch(error => {
+                showNotification('Error sending email', 'error');
+            });
+        }
+        
+        function closeModal() {
+            document.getElementById('userModal').style.display = 'none';
+            currentPassword = '';
+        }
+        
+        window.onclick = function(event) {
+            const modal = document.getElementById('userModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+    </script>
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+</body>
+</html>

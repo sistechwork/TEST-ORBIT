@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: exam-portal
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: exam-portal-db
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+    autoDeploy: true
+
+databases:
+  - name: exam-portal-db
+    databaseName: exam_portal
+    plan: free
