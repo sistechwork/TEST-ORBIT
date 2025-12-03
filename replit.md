@@ -83,7 +83,14 @@ To enable email sending for bulk user imports:
    - `MAIL_PASSWORD`: Your email app password (for Gmail: https://support.google.com/accounts/answer/185833)
 2. The system will automatically send credentials to users when they are created via bulk import or individual add
 
-## Recent Updates (December 2, 2025)
+## Recent Updates (December 3, 2025)
+1. **Admin Dark Theme Redesign**: Admin interface (login and dashboard) now uses a dark theme with red/orange accents to differentiate from user interface
+2. **Admin Login Styling**: Dark animated gradient background (#0a0f1f to #7f1d1d/#b91c1c), red/orange floating shapes, and red/orange accent colors
+3. **Admin Dashboard Styling**: Dark body background, dark cards/sections, white text, red/orange accent colors throughout
+4. **Visual Differentiation**: User interface uses blue accents (#3B82F6), admin interface uses red/orange accents (#ef4444, #dc2626, #fb923c)
+5. **Consistent Admin Theme**: All admin pages now have cohesive dark backgrounds with light text and red/orange interactive elements
+
+## Previous Updates (December 2, 2025)
 1. **Light Theme Redesign**: Changed from dark blue backgrounds to light grey/white theme
 2. **New Background Colors**: Light gradient backgrounds (#f8fafc, #f1f5f9, #e2e8f0, #cbd5e1)
 3. **White Cards**: All cards, containers, and panels now use white backgrounds with subtle borders
