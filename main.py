@@ -17,17 +17,14 @@ database_url = os.environ.get("DATABASE_URL")
 if database_url:
     if database_url.startswith("postgres://"):
         database_url = database_url.replace("postgres://", "postgresql://", 1)
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "pool_recycle": 300,
+        "pool_pre_ping": True,
+    }
 else:
-    raise RuntimeError(
-        "DATABASE_URL environment variable is not set. "
-        "Please set it in your Render dashboard or environment variables."
-    )
-
-app.config["SQLALCHEMY_DATABASE_URI"] = database_url
-app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-    "pool_recycle": 300,
-    "pool_pre_ping": True,
-}
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///exam_portal.db"
+    print("WARNING: Using SQLite database. For production, set DATABASE_URL environment variable to use PostgreSQL.")
 
 app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER", "smtp.gmail.com")
 app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT", 587))

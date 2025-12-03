@@ -1,6 +1,15 @@
+modules = ["python-3.11"]
 [agent]
 expertMode = true
 
 [nix]
 channel = "stable-25_05"
-packages = ["unzip"]
+packages = ["cargo", "glibcLocales", "libiconv", "libxcrypt", "openssl", "pkg-config", "rustc", "unzip"]
+
+[userenv]
+
+[userenv.shared]
+ENCRYPTION_KEY = "WmnSwh3Jzil0uYaG5rohfLof7QmptY8nX6jTK-MgiIw="
+MAIL_SERVER = "smtp.gmail.com"
+MAIL_PORT = "587"
+MAIL_USE_TLS = "True"
