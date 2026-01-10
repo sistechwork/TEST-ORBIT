@@ -588,7 +588,7 @@
                             </div>
                         </div>
                         <div style="display: flex; gap: 8px;">
-                            <button onclick="toggleEditUser('edit-user-{{ user.id }}')" class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 14px;">
+                            <button onclick="window.location.href='/admin/user/edit/{{ user.id }}'" class="btn btn-secondary" style="width: auto; padding: 8px 16px; font-size: 14px;">
                                 ✏️ Edit
                             </button>
                             <form method="POST" action="{{ url_for('delete_user', user_id=user.id) }}" style="display: inline;">
