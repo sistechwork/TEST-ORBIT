@@ -1,0 +1,80 @@
+ * Serving Flask app 'main'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.31.96.162:5000
+[33mPress CTRL+C to quit[0m
+172.31.96.162 - - [10/Mar/2026 07:58:34] "[32mGET / HTTP/1.1[0m" 302 -
+172.31.96.162 - - [10/Mar/2026 07:58:34] "GET /admin/login HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 07:58:34] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 07:58:34] "GET /static/images/Logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 07:58:34] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 07:58:45] "GET /admin/login HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 07:58:45] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 07:58:46] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 07:58:46] "GET /static/images/Logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 07:58:50] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+172.31.96.162 - - [10/Mar/2026 07:59:51] "[32mGET / HTTP/1.1[0m" 302 -
+172.31.96.162 - - [10/Mar/2026 07:59:51] "GET /admin/login HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 07:59:51] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 07:59:51] "GET /static/images/Logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 07:59:51] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:00:14] "GET /admin/login HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:00:14] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:00:14] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:00:14] "GET /static/images/Logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:00:17] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+172.31.96.162 - - [10/Mar/2026 08:01:30] "POST /admin/login HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:30] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:30] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:30] "GET /static/images/Logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:33] "POST /admin/login HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:33] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:33] "GET /static/images/Logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:33] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:56] "[32mPOST /admin/login HTTP/1.1[0m" 302 -
+172.31.96.162 - - [10/Mar/2026 08:01:56] "GET /admin/dashboard HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:56] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:56] "GET /static/css/style.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:56] "GET /static/images/logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:56] "GET /static/images/logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:01:56] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:02:01] "GET /admin/login HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:02:01] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:02:01] "GET /static/images/Logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:02:01] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:02:19] "[32mPOST /admin/login HTTP/1.1[0m" 302 -
+172.31.96.162 - - [10/Mar/2026 08:02:19] "GET /admin/dashboard HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:02:19] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:02:19] "GET /static/css/style.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:02:19] "GET /static/images/logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:02:20] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:02:20] "GET /static/images/logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:03:45] "GET /admin/users_list HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:03:45] "GET /static/css/style.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:03:45] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:03:45] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:03:51] "GET /admin/smtp_settings HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:03:51] "GET /static/css/style.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:03:51] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:03:51] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:04:00] "GET /admin/dashboard HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:04:01] "GET /static/css/style.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:04:01] "GET /static/images/logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:04:01] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:04:01] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:04:01] "GET /static/images/logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:05:51] "[32mPOST /admin/add_user HTTP/1.1[0m" 302 -
+172.31.96.162 - - [10/Mar/2026 08:05:51] "GET /admin/dashboard HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:05:51] "GET /static/css/style.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:05:51] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:05:51] "GET /static/images/logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:05:51] "GET /static/js/notifications.js HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:05:51] "GET /static/images/logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:06:01] "[33mGET /admin/user/edit/3 HTTP/1.1[0m" 404 -
+172.31.96.162 - - [10/Mar/2026 08:06:23] "[32mGET /logout HTTP/1.1[0m" 302 -
+172.31.96.162 - - [10/Mar/2026 08:06:23] "GET /login HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:06:23] "GET /static/css/notifications.css HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:06:23] "GET /static/images/Logo.png HTTP/1.1" 200 -
+172.31.96.162 - - [10/Mar/2026 08:06:23] "GET /static/js/notifications.js HTTP/1.1" 200 -

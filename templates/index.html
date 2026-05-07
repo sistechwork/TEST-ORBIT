@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradTwin | Technology, support, growth</title>
+    <!-- Outfit Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="logo-icon">
+            <img src="{{ url_for('static', filename='images/gradtwin_logo.png') }}" alt="GradTwin Logo"
+                style="width: 250px; height: auto; display: block; margin: 0 auto;">
+        </div>
+        <!-- <a href="#" class="logo">Consalting</a> -->
+
+        <!-- <nav class="nav">
+            <a href="#" class="nav-link">About us</a>
+            <a href="#" class="nav-link">Services <i class="fa-solid fa-chevron-down"></i></a>
+            <a href="#" class="nav-link">Cases <i class="fa-solid fa-chevron-down"></i></a>
+            <a href="#" class="nav-link">Reviews</a>
+            <a href="#" class="nav-link">Blog</a>
+            <a href="#" class="nav-link">Contacts</a>
+        </nav> -->
+
+        <a href="{{ url_for('login') }}" class="btn-start">Start <i class="fa-solid fa-arrow-right"></i></a>
+    </header>
+
+    <main class="hero">
+        <!-- Background Ripple Effect -->
+        <div class="ripple-container">
+            <div class="ripple-glow"></div>
+            <div class="ripple r1"></div>
+            <div class="ripple r2"></div>
+            <div class="ripple r3"></div>
+            <div class="ripple r4"></div>
+        </div>
+
+        <div class="hero-content">
+            <h1>Technology, support, growth — all in one window</h1>
+            <p>We help businesses receive grants, create products, and enter the market.</p>
+
+            <div class="hero-actions">
+                <a href="{{ url_for('login') }}" class="btn-consultation">Get Started</a>
+                <a href="{{ url_for('login') }}" class="btn-arrow"><i class="fa-solid fa-arrow-up-right-from-square"
+                        style="transform: rotate(45deg);"></i></a>
+            </div>
+        </div>
+
+        <!-- Decorative Floating Icons -->
+        <div class="floating-icon icon-shield">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div class="floating-icon icon-clock">
+            <i class="fa-solid fa-clock"></i>
+        </div>
+    </main>
+
+</body>
+
+</html>
+

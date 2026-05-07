@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Test Orbit Exam Portal</title>
+    <title>Student Login - GradTwin Exam Portal</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
+        html,
+        body {
+            height: auto;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -16,31 +23,37 @@
         body {
             font-family: 'Poppins', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(
-              135deg,
-              #0a0f1f 0%,
-              #0f172a 25%,
-              #1e293b 50%,
-              #1e3a8a 75%,
-              #1d4ed8 100%
-            );
-
+            background: linear-gradient(135deg,
+                    #020617 0%,
+                    #0f172a 25%,
+                    #1e1b4b 50%,
+                    #1e3a8a 75%,
+                    #1e40af 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
-            display: flex;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .container {
             display: flex;
             width: 100%;
             min-height: 100vh;
+            align-items: stretch;
         }
 
         .left-panel {
@@ -63,6 +76,18 @@
             z-index: 0;
         }
 
+        .brand-logo {
+            width: 320px;
+            height: 120px;
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 2;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
         .shape {
             position: absolute;
             border-radius: 50%;
@@ -72,7 +97,7 @@
         .shape-1 {
             width: 300px;
             height: 300px;
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.5) 0%, rgba(30, 64, 175, 0.3) 100%);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.4) 0%, rgba(30, 64, 175, 0.2) 100%);
             bottom: -50px;
             left: -50px;
             animation: float1 8s ease-in-out infinite;
@@ -81,7 +106,7 @@
         .shape-2 {
             width: 200px;
             height: 200px;
-            background: linear-gradient(135deg, rgba(96, 165, 250, 0.4) 0%, rgba(59, 130, 246, 0.2) 100%);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.3) 0%, rgba(8, 145, 178, 0.15) 100%);
             bottom: 150px;
             left: 200px;
             animation: float2 10s ease-in-out infinite;
@@ -90,7 +115,7 @@
         .shape-3 {
             width: 150px;
             height: 150px;
-            background: linear-gradient(135deg, rgba(147, 197, 253, 0.5) 0%, rgba(96, 165, 250, 0.3) 100%);
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.5) 0%, rgba(29, 78, 216, 0.3) 100%);
             top: 100px;
             left: 100px;
             animation: float3 12s ease-in-out infinite;
@@ -99,7 +124,7 @@
         .shape-4 {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, rgba(191, 219, 254, 0.6) 0%, rgba(147, 197, 253, 0.4) 100%);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.5) 0%, rgba(37, 99, 235, 0.3) 100%);
             top: 200px;
             left: 350px;
             animation: float4 7s ease-in-out infinite;
@@ -108,7 +133,7 @@
         .shape-5 {
             width: 120px;
             height: 120px;
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.4) 0%, rgba(30, 58, 138, 0.2) 100%);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(30, 64, 175, 0.15) 100%);
             bottom: 300px;
             left: 50px;
             animation: float5 9s ease-in-out infinite;
@@ -116,7 +141,7 @@
 
         .orbit-ring {
             position: absolute;
-            border: 2px solid rgba(59, 130, 246, 0.3);
+            border: 2px solid rgba(59, 130, 246, 0.2);
             border-radius: 50%;
             animation: rotate 20s linear infinite;
         }
@@ -137,39 +162,89 @@
             transform: translate(-50%, -50%);
             animation-direction: reverse;
             animation-duration: 15s;
+            border-color: rgba(6, 182, 212, 0.25);
         }
 
         @keyframes rotate {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
         }
 
         @keyframes float1 {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -30px) rotate(10deg); }
-            66% { transform: translate(-20px, 20px) rotate(-5deg); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(30px, -30px) rotate(10deg);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) rotate(-5deg);
+            }
         }
 
         @keyframes float2 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(40px, -40px) scale(1.1); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(40px, -40px) scale(1.1);
+            }
         }
 
         @keyframes float3 {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(20px, 30px); }
-            50% { transform: translate(-15px, 50px); }
-            75% { transform: translate(25px, 20px); }
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(20px, 30px);
+            }
+
+            50% {
+                transform: translate(-15px, 50px);
+            }
+
+            75% {
+                transform: translate(25px, 20px);
+            }
         }
 
         @keyframes float4 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-30px, 30px) scale(0.9); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(-30px, 30px) scale(0.9);
+            }
         }
 
         @keyframes float5 {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(50px, -20px); }
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(50px, -20px);
+            }
         }
 
         .brand-content {
@@ -181,25 +256,21 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
 
         .logo-icon {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .logo-icon img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-        }
-
-        .brand-name {
-            font-size: 32px;
-            font-weight: 700;
-            color: #3b82f6;
-            letter-spacing: 1px;
         }
 
         .brand-tagline {
@@ -220,6 +291,32 @@
             line-height: 1.6;
         }
 
+        .student-features {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3) 0%, rgba(6, 182, 212, 0.2) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
         .right-panel {
             flex: 1;
             display: flex;
@@ -230,41 +327,68 @@
 
         .login-card {
             width: 100%;
-            max-width: 420px;
-            background: rgba(15, 23, 42, 0.9);
+            max-width: 440px;
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 50px 40px;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 100px rgba(59, 130, 246, 0.1);
+            border-radius: 28px;
+            padding: 60px 45px;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 120px rgba(59, 130, 246, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 140px rgba(59, 130, 246, 0.2);
         }
 
         .login-header {
             text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .login-header .logo-container {
             margin-bottom: 25px;
         }
 
-        .login-header .logo-container img {
-            height: 80px;
-            width: auto;
+        .login-header .logo-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            width: 250px;
+            height: 100px;
+            margin-left: auto;
+            margin-right: auto;
+            align-items: center;
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        .login-header .welcome-text {
-            font-size: 12px;
+        .login-header .logo-container img {
+            max-height: 100%;
+            max-width: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .portal-badge {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            color: rgba(255, 255, 255, 0.5);
-            margin-bottom: 10px;
+            letter-spacing: 2.5px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
         }
 
         .login-header h2 {
-            font-size: 24px;
-            font-weight: 600;
+            font-size: 28px;
+            font-weight: 700;
             color: white;
+            letter-spacing: -0.5px;
         }
 
         .flash-messages {
@@ -332,21 +456,10 @@
             cursor: pointer;
         }
 
-        .forgot-link {
-            font-size: 13px;
-            color: #60a5fa;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .forgot-link:hover {
-            color: #93c5fd;
-        }
-
         .btn-login {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 50%, #1e3a8a 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1e40af 100%);
             border: none;
             border-radius: 12px;
             font-size: 16px;
@@ -426,11 +539,13 @@
             .right-panel {
                 flex: none;
                 width: 100%;
+                min-height: auto;
+                align-items: center;
+                padding: 30px 20px;
             }
 
-            body {
-                justify-content: center;
-                align-items: center;
+            .container {
+                min-height: auto;
             }
         }
 
@@ -450,9 +565,10 @@
         }
     </style>
 </head>
+
 <body>
     <div id="notification-container"></div>
-    
+
     <div class="container">
         <div class="left-panel">
             <div class="floating-shapes">
@@ -464,18 +580,37 @@
                 <div class="orbit-ring orbit-ring-1"></div>
                 <div class="orbit-ring orbit-ring-2"></div>
             </div>
-            
+
             <div class="brand-content">
                 <div class="brand-logo">
                     <div class="logo-icon">
-                        <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Test Orbit Logo" style="width: 380px; height:160px; display: block; margin: 0 auto;">
+                        <img src="{{ url_for('static', filename='images/gradtwin_logo.png') }}" alt="GradTwin Logo"
+                            style="width: 300px; height: auto; display: block; margin: 0 auto;">
                     </div>
-                    
                 </div>
-                
+
                 <div class="brand-tagline">
-                    <h1>Welcome to the Exam Portal</h1>
-                    <p>Access your exams securely with our advanced proctoring system. Sign in to begin your assessment journey.</p>
+                    <h1>Student Access Portal</h1>
+                    <p>Access your assessments, track your progress, and excel in your learning journey with our secure examination platform.</p>
+                </div>
+
+                <div class="student-features">
+                    <div class="feature-item">
+                        <div class="feature-icon">📝</div>
+                        <span>Take interactive exams in real-time</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">⏳</div>
+                        <span>Monitor remaining time and exam progress</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🛡️</div>
+                        <span>Secure and private proctored environment</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📜</div>
+                        <span>View your results and performance reports</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -484,34 +619,39 @@
             <div class="login-card">
                 <div class="login-header">
                     <div class="logo-container">
-                        <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Test Orbit Logo" style="width: 220px; height:220px; display: block; margin: 0 auto;">
+                        <img src="{{ url_for('static', filename='images/gradtwin_logo.png') }}" alt="GradTwin Logo"
+                            style="width: 200px; height: auto; display: block; margin: 0 auto;">
                     </div>
-                    <p class="welcome-text">Welcome Back</p>
-                    <h2>Sign in to your account</h2>
+                    <div class="portal-badge">Student Portal</div>
+                    <h2>Student Sign In</h2>
                 </div>
 
                 {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        <div class="flash-messages">
-                            {% for category, message in messages %}
-                                <div class="flash {{ category }}">{{ message }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
                 {% endwith %}
 
                 <form method="POST" action="/login" autocomplete="off">
                     <input type="text" name="fake_username" style="display:none" autocomplete="off">
                     <input type="password" name="fake_password" style="display:none" autocomplete="new-password">
-                    
+
                     <div class="form-group">
                         <label for="username">Email Address</label>
-                        <input type="email" id="username" name="username" class="input-field" placeholder="Enter your email" required autofocus autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                        <input type="email" id="username" name="username" class="input-field"
+                            placeholder="Enter your email" required autofocus autocomplete="off" readonly
+                            onfocus="this.removeAttribute('readonly');">
                     </div>
 
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" class="input-field" placeholder="Enter your password" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
+                        <input type="password" id="password" name="password" class="input-field"
+                            placeholder="Enter your password" required autocomplete="new-password" readonly
+                            onfocus="this.removeAttribute('readonly');">
                     </div>
 
                     <div class="form-options">
@@ -519,18 +659,18 @@
                             <input type="checkbox" id="remember" name="remember">
                             <label for="remember">Remember me</label>
                         </div>
-                        <a href="#" class="forgot-link">Forgot Password?</a>
+                        <a href="#" style="color: #60a5fa; text-decoration: none; font-size: 13px;">Forgot your password?</a>
                     </div>
 
-                    <button type="submit" class="btn-login">Sign In</button>
+                    <button type="submit" class="btn-login">Student Login</button>
                 </form>
 
                 <p class="signup-link">
                     Don't have an account? <a href="/register">Create one</a>
                 </p>
-                
+
                 <p class="admin-link">
-                    <a href="/admin/login">Admin Login</a>
+                    <a href="/admin/login">Admin Access</a>
                 </p>
             </div>
         </div>
@@ -538,4 +678,6 @@
 
     <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
 </body>
+
 </html>
+

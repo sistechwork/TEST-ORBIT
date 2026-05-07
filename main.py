@@ -130,7 +130,7 @@ def index():
         return redirect(url_for('exam'))
     if 'admin' in session:
         return redirect(url_for('admin_dashboard'))
-    return redirect(url_for('admin_login'))
+    return render_template('index.html')
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():

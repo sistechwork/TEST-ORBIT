@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Test Orbit Exam Portal</title>
+    <title>Admin Login - GradTwin Exam Portal</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <style>
+        html,
+        body {
+            height: auto;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -16,30 +23,37 @@
         body {
             font-family: 'Poppins', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(
-              135deg,
-              #0a0f1f 0%,
-              #0f172a 25%,
-              #1e293b 50%,
-              #7f1d1d 75%,
-              #b91c1c 100%
-            );
+            background: linear-gradient(135deg,
+                    #0a0f1f 0%,
+                    #0f172a 25%,
+                    #1e293b 50%,
+                    #7f1d1d 75%,
+                    #b91c1c 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
-            display: flex;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .container {
             display: flex;
             width: 100%;
             min-height: 100vh;
+            align-items: stretch;
         }
 
         .left-panel {
@@ -140,36 +154,85 @@
         }
 
         @keyframes rotate {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
         }
 
         @keyframes float1 {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -30px) rotate(10deg); }
-            66% { transform: translate(-20px, 20px) rotate(-5deg); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(30px, -30px) rotate(10deg);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) rotate(-5deg);
+            }
         }
 
         @keyframes float2 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(40px, -40px) scale(1.1); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(40px, -40px) scale(1.1);
+            }
         }
 
         @keyframes float3 {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(20px, 30px); }
-            50% { transform: translate(-15px, 50px); }
-            75% { transform: translate(25px, 20px); }
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(20px, 30px);
+            }
+
+            50% {
+                transform: translate(-15px, 50px);
+            }
+
+            75% {
+                transform: translate(25px, 20px);
+            }
         }
 
         @keyframes float4 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-30px, 30px) scale(0.9); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(-30px, 30px) scale(0.9);
+            }
         }
 
         @keyframes float5 {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(50px, -20px); }
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(50px, -20px);
+            }
         }
 
         .brand-content {
@@ -178,15 +241,23 @@
         }
 
         .brand-logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 40px;
+            width: 320px;
+            height: 120px;
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 2;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .logo-icon {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .logo-icon img {
@@ -266,19 +337,29 @@
 
         .login-header {
             text-align: center;
-            margin-bottom: 45px;
+            margin-bottom: 25px;
         }
 
         .login-header .logo-container {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: center;
+            width: 250px;
+            height: 100px;
+            margin-left: auto;
+            margin-right: auto;
+            align-items: center;
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .login-header .logo-container img {
-            height: 90px;
+            max-height: 100%;
+            max-width: 100%;
             width: auto;
-            filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.3));
+            object-fit: contain;
         }
 
         .admin-badge {
@@ -435,11 +516,13 @@
             .right-panel {
                 flex: none;
                 width: 100%;
+                min-height: auto;
+                align-items: center;
+                padding: 30px 20px;
             }
 
-            body {
-                justify-content: center;
-                align-items: center;
+            .container {
+                min-height: auto;
             }
         }
 
@@ -459,9 +542,10 @@
         }
     </style>
 </head>
+
 <body>
     <div id="notification-container"></div>
-    
+
     <div class="container">
         <div class="left-panel">
             <div class="floating-shapes">
@@ -473,17 +557,19 @@
                 <div class="orbit-ring orbit-ring-1"></div>
                 <div class="orbit-ring orbit-ring-2"></div>
             </div>
-            
+
             <div class="brand-content">
                 <div class="brand-logo">
                     <div class="logo-icon">
-                        <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Test Orbit Logo" style="width: 380px; height:160px; display: block; margin: 0 auto;">
+                        <img src="{{ url_for('static', filename='images/gradtwin_logo.png') }}" alt="GradTwin Logo"
+                            style="width: 300px; height: auto; display: block; margin: 0 auto;">
                     </div>
                 </div>
-                
+
                 <div class="brand-tagline">
                     <h1>Admin Control Center</h1>
-                    <p>Manage exams, monitor students, and control all aspects of the examination system from your administrative dashboard.</p>
+                    <p>Manage exams, monitor students, and control all aspects of the examination system from your
+                        administrative dashboard.</p>
                 </div>
 
                 <div class="admin-features">
@@ -511,34 +597,39 @@
             <div class="login-card">
                 <div class="login-header">
                     <div class="logo-container">
-                        <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="Test Orbit Logo" style="width: 220px; height:220px; display: block; margin: 0 auto;">
+                        <img src="{{ url_for('static', filename='images/gradtwin_logo.png') }}" alt="GradTwin Logo"
+                            style="width: 200px; height: auto; display: block; margin: 0 auto;">
                     </div>
                     <div class="admin-badge">Admin Portal</div>
                     <h2>Administrator Sign In</h2>
                 </div>
 
                 {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        <div class="flash-messages">
-                            {% for category, message in messages %}
-                                <div class="flash {{ category }}">{{ message }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+                {% endif %}
                 {% endwith %}
 
                 <form method="POST" action="/admin/login" autocomplete="off">
                     <input type="text" name="fake_username" style="display:none" autocomplete="off">
                     <input type="password" name="fake_password" style="display:none" autocomplete="new-password">
-                    
+
                     <div class="form-group">
                         <label for="username">Admin Email</label>
-                        <input type="text" id="username" name="username" class="input-field" placeholder="Enter admin email" required autofocus autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                        <input type="text" id="username" name="username" class="input-field"
+                            placeholder="Enter admin email" required autofocus autocomplete="off" readonly
+                            onfocus="this.removeAttribute('readonly');">
                     </div>
 
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" class="input-field" placeholder="Enter password" required autocomplete="new-password" readonly onfocus="this.removeAttribute('readonly');">
+                        <input type="password" id="password" name="password" class="input-field"
+                            placeholder="Enter password" required autocomplete="new-password" readonly
+                            onfocus="this.removeAttribute('readonly');">
                     </div>
 
                     <div class="form-options">
@@ -560,4 +651,6 @@
 
     <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
 </body>
+
 </html>
+

@@ -3,106 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users - Admin Panel</title>
+    <title>Users - GradTwin Admin Panel</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/notifications.css') }}">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.25s ease;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #020617, #0F172A);
+            color: #E2E8F0;
+            min-height: 100vh;
+        }
+
         .admin-layout {
             display: flex;
             min-height: 100vh;
         }
+
         .sidebar {
-            width: 250px;
-            background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
-            padding: 20px;
-            color: #1e293b;
+            width: 280px;
+            background: #1E293B;
+            padding: 0;
+            color: white;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
-            transition: margin-left 0.3s ease;
-            border-right: 1px solid #cbd5e1;
+            transition: all 0.3s ease;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .sidebar.collapsed {
-            margin-left: -250px;
+            margin-left: -280px;
         }
+
         .sidebar h2 {
-            color: #1e293b;
-            margin-bottom: 30px;
-            font-size: 24px;
+            padding: 30px 25px;
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
         }
+
         .sidebar-nav {
             list-style: none;
-            padding: 0;
+            padding: 20px 15px;
         }
+
         .sidebar-nav li {
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
+
         .sidebar-nav a {
-            display: block;
-            padding: 12px 16px;
-            color: #475569;
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            color: #94A3B8;
             text-decoration: none;
-            border-radius: 8px;
-            transition: background 0.2s;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 14px;
         }
-        .sidebar-nav a:hover, .sidebar-nav a.active {
-            background: rgba(59, 130, 246, 0.15);
+
+        .sidebar-nav a:hover {
+            background: rgba(59, 130, 246, 0.1);
             color: #3b82f6;
+            transform: translateX(5px);
         }
+
+        .sidebar-nav a.active {
+            background: linear-gradient(90deg, #3B82F6, #8B5CF6);
+            color: white;
+            border-left: 4px solid #22C55E;
+        }
+
         .main-content {
             flex: 1;
-            margin-left: 250px;
-            padding: 20px;
+            margin-left: 280px;
+            padding: 30px;
             transition: margin-left 0.3s ease;
+            min-height: 100vh;
         }
+
         .main-content.expanded {
             margin-left: 0;
         }
+
         .toggle-sidebar {
             position: fixed;
-            top: 20px;
-            left: 260px;
+            top: 25px;
+            left: 290px;
             z-index: 1000;
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 12px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: left 0.3s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
+
+        .toggle-sidebar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
         .toggle-sidebar.collapsed {
-            left: 10px;
+            left: 15px;
         }
+
         .users-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            background: white;
-            border-radius: 8px;
+            background: #334155;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
+
         .users-table th {
-            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
             color: white;
-            padding: 12px;
+            padding: 16px;
             text-align: left;
             font-weight: 600;
             cursor: pointer;
             user-select: none;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
         }
+
         .users-table th:hover {
-            background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+            background: linear-gradient(135deg, #2563eb, #1e40af);
         }
+
         .users-table td {
-            padding: 12px;
-            border-bottom: 1px solid #e2e8f0;
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #E2E8F0;
         }
+
         .users-table tr:hover {
-            background: #f7fafc;
+            background: rgba(255, 255, 255, 0.03);
             cursor: pointer;
         }
+
         .modal {
             display: none;
             position: fixed;
@@ -111,44 +169,66 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(2, 6, 23, 0.9);
+            backdrop-filter: blur(5px);
         }
+
         .modal-content {
-            background: white;
+            background: #1F2937;
             margin: 50px auto;
             padding: 30px;
-            width: 80%;
+            width: 90%;
             max-width: 700px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            max-height: 80vh;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            max-height: 85vh;
             overflow-y: auto;
+            color: #E2E8F0;
+            border: 1px solid #475569;
         }
+
         .close-modal {
-            color: #999;
+            color: #94A3B8;
             float: right;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            transition: color 0.2s;
         }
+
         .close-modal:hover {
-            color: #333;
+            color: #ffffff;
         }
+
         .pagination {
             display: flex;
             justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 30px;
         }
+
         .pagination a, .pagination span {
-            padding: 8px 12px;
-            border-radius: 5px;
-            background: #667eea;
-            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: #334155;
+            color: #E2E8F0;
             text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 1px solid #475569;
         }
+
+        .pagination a:hover {
+            background: #3B82F6;
+            color: white;
+            border-color: #3B82F6;
+            transform: translateY(-2px);
+        }
+
         .pagination span {
-            background: #764ba2;
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            color: white;
+            border-color: transparent;
         }
     </style>
 </head>
@@ -156,7 +236,10 @@
     <div id="notification-container"></div>
     <div class="admin-layout">
         <nav class="sidebar" id="sidebar">
-            <h2><svg style="width: 20px; height: 20px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>Admin Panel</h2>
+            <div class="sidebar-header" style="padding: 30px 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
+                <img src="{{ url_for('static', filename='images/gradtwin_logo.png') }}" alt="GradTwin" class="sidebar-logo" style="width: 220px; height: auto; background: white; border-radius: 8px; padding: 10px;">
+                <div class="sidebar-title" style="font-size: 14px; font-weight: 600; color: #94A3B8; text-transform: uppercase; letter-spacing: 2px; margin-top: 15px;">GradTwin</div>
+            </div>
             <ul class="sidebar-nav">
                 <li><a href="{{ url_for('admin_dashboard') }}"><svg style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>Dashboard</a></li>
                 <li><a href="{{ url_for('admin_users_list') }}" class="active"><svg style="width: 16px; height: 16px; display: inline-block; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>Users</a></li>
@@ -355,3 +438,5 @@
     <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
 </body>
 </html>
+
+

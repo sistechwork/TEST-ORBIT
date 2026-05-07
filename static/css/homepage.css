@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+:root {
+    --primary-blue: #3B82F6;
+    --primary-blue-rgb: 59, 130, 246;
+    --bg-white: #ffffff;
+    --text-dark: #0F172A;
+    --text-muted: #64748b;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--bg-white);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Layout --- */
+.header {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 100;
+}
+
+.logo {
+    display: none;
+}
+
+.logo-icon img {
+    height: 60px;
+    width: auto;
+    display: block;
+}
+
+.nav {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: var(--text-dark);
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: var(--transition);
+}
+
+.nav-link:hover {
+    color: var(--primary-blue);
+}
+
+.nav-link i {
+    font-size: 10px;
+}
+
+.btn-start {
+    padding: 10px 24px;
+    border-radius: 25px;
+    border: 1px solid #0F172A;
+    background: transparent;
+    color: var(--text-dark);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+}
+
+.btn-start:hover {
+    background: #0F172A;
+    color: white;
+}
+
+/* --- Hero Section --- */
+.hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px 120px;
+    position: relative;
+    z-index: 10;
+}
+
+.hero-content {
+    max-width: 800px;
+    position: relative;
+}
+
+.hero h1 {
+    font-size: 64px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text-dark);
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+}
+
+.hero p {
+    font-size: 18px;
+    color: var(--text-muted);
+    max-width: 500px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-consultation {
+    padding: 18px 45px;
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    color: white;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+    transition: var(--transition);
+}
+
+.btn-consultation:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+}
+
+.btn-arrow {
+    width: 60px;
+    height: 60px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-blue);
+    font-size: 24px;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.btn-arrow:hover {
+    transform: rotate(45deg);
+}
+
+/* --- Background Ripple Effect --- */
+.ripple-container {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1000px;
+    height: 1000px;
+    z-index: -1;
+    pointer-events: none;
+    overflow: visible;
+}
+
+.ripple {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1px solid rgba(var(--primary-blue-rgb), 0.3);
+}
+
+.r1 { width: 100%; height: 100%; animation: ripplePulse 12s infinite alternate; }
+.r2 { width: 80%; height: 80%; animation: ripplePulse 15s infinite alternate-reverse; }
+.r3 { width: 60%; height: 60%; }
+.r4 { width: 40%; height: 40%; background: radial-gradient(circle, rgba(var(--primary-blue-rgb), 0.2) 0%, transparent 70%); }
+
+.ripple-glow {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(var(--primary-blue-rgb), 0.25) 0%, transparent 70%);
+    filter: blur(60px);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes ripplePulse {
+    0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.2; }
+    100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.5; }
+}
+
+/* --- Decorative Icons --- */
+.floating-icon {
+    position: absolute;
+    background: white;
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+    border: 1px solid rgba(255,255,255,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    z-index: 5;
+    animation: float 6s infinite ease-in-out;
+}
+
+.icon-shield {
+    left: 10%;
+    bottom: 20%;
+}
+
+.icon-clock {
+    right: 10%;
+    bottom: 20%;
+    animation-delay: -3s;
+}
+
+.icon-shield i { color: #3B82F6; font-size: 32px; }
+.icon-clock i { color: #FFB800; font-size: 32px; }
+
+@keyframes float {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .hero h1 { font-size: 52px; }
+    .nav { display: none; }
+    .ripple-container { width: 800px; height: 800px; }
+}
+
+@media (max-width: 768px) {
+    .hero h1 { font-size: 42px; }
+    .floating-icon { width: 60px; height: 60px; }
+    .floating-icon i { font-size: 24px; }
+}
+
+@media (max-width: 480px) {
+    .header { padding: 20px; }
+    .hero h1 { font-size: 32px; }
+    .floating-icon { display: none; }
+}

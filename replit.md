@@ -1,19 +1,19 @@
-# Test Orbit - Exam Portal
+# GradTwin - Exam Portal
 
 ## Overview
-Test Orbit is a secure online examination system built with Flask, HTML, CSS, and PostgreSQL. It features robust anti-cheating measures, comprehensive user authentication, and an administrative dashboard for monitoring student performance. The system's primary purpose is to provide a reliable and cheat-proof environment for conducting online exams, ensuring fair assessments and efficient management of examination data. Key capabilities include real-time proctoring (camera and audio), dynamic question rendering, and detailed performance analytics for administrators.
+GradTwin is a secure online examination system built with Flask, HTML, CSS, and PostgreSQL. It features robust anti-cheating measures, comprehensive user authentication, and an administrative dashboard for monitoring student performance. The system's primary purpose is to provide a reliable and cheat-proof environment for conducting online exams, ensuring fair assessments and efficient management of examination data. Key capabilities include real-time proctoring (camera and audio), dynamic question rendering, and detailed performance analytics for administrators.
 
 ## User Preferences
 I want iterative development. Ask before making major changes. I prefer detailed explanations.
 
 ## Branding (Updated December 2, 2025)
-- **Brand Name**: Test Orbit
+- **Brand Name**: GradTwin
 - **Logo**: Blue orbital design (static/images/logo.png)
 - **Primary Color**: #3B82F6 (Bright Blue)
 - **Secondary Colors**: #1E40AF (Dark Blue), #1E3A8A (Navy), #60A5FA (Light Blue)
 - **Background**: Light grey gradient (#f8fafc to #f1f5f9 to #e2e8f0 to #cbd5e1)
 - **Theme**: Clean, modern light theme with white cards, subtle shadows, and blue accents
-- **All pages updated with consistent Test Orbit branding and light grey/white color scheme**
+- **All pages updated with consistent GradTwin branding and light grey/white color scheme**
 
 ## System Architecture
 
